@@ -1,0 +1,39 @@
+# phoenixd service
+# /etc/systemd/system/phoenixd.service
+
+[Unit]
+Description=phoenixd
+Wants=www.service docker_images.service
+After=www.service docker_images.service
+
+[Service]
+WorkingDirectory=/opt/mynode/phoenixd
+
+ExecStartPre=/usr/bin/is_not_shutting_down.sh
+ExecStartPre=/bin/bash -c 'if [ -f /usr/bin/service_scripts/pre_phoenixd.sh ]; then /bin/bash /usr/bin/service_scripts/pre_phoenixd.sh; fi'
+
+#
+#ExecStart=FILL_IN_EXECSTART
+
+# docker
+ExecStart=docker run --rm --name phoenixd --publish 9740:9740 --volume /mnt/hdd/mynode/phoenixd:/.phoenix --env PHOENIX_DATADIR='/.phoenix' --env WORK_DIR='/phoenix' phoenixd
+
+ExecStartPost=/bin/bash -c 'if [ -f /usr/bin/service_scripts/post_phoenixd.sh ]; then /bin/bash /usr/bin/service_scripts/post_phoenixd.sh; fi'
+
+#
+#ExecStop=FILL_IN_EXECSTOP_AND_UNCOMMENT_IF_NEEDED
+#
+ExecStop=kill $(pgrep -f 'fr.acinq.phoenixd.PhoenixdKt')
+
+#User=phoenixd
+#Group=phoenixd
+Type=simple
+TimeoutSec=120
+Restart=always
+RestartSec=60
+#StandardOutput=syslog
+#StandardError=syslog
+SyslogIdentifier=phoenixd
+
+[Install]
+WantedBy=multi-user.target

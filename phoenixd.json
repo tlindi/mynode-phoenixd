@@ -1,0 +1,68 @@
+{
+    "name": "phoenixd",
+    "short_name": "phoenixd",
+    "author": {
+        "name": "ACINQ",
+        "link": "https://phoenix.acinq.co/server"
+    },
+    "website": {
+        "name": "GitHub",
+        "link": "https://github.com/ACINQ/phoenixd"
+    },
+    "category": "lightning_app",
+    "short_description": "Lightning Wallet Server",
+    "description": [
+        "phoenixd is the server equivalent of the popular phoenix wallet for mobile.",
+        "It is written in Kotlin Multiplatform and runs natively on",
+        "Linux, MacOS (x86 and ARM), and Windows (WSL).",
+        ">self custodial - your keys, your coins no email, no signup",
+        ">absolutely -NO configuration get started in seconds",
+        ">easy http api - webhook/websocket notifications",
+        ">fast, lightweight, native binaries (linux/mac/wsl)",
+        ">never miss an incoming payment - fully automated liquidity and channel management",
+        ">competitive pricing (~1% receive fee, on par with custodian alternatives)"
+    ],
+    "latest_version": "v0.5.1",
+    "supported_archs": null,
+    "download_skip": true,
+    "download_type": "source",
+    "download_source_url": "https://github.com/acinq/phoenixd/archive/refs/tags/{VERSION}.tar.gz",
+    "download_binary_url": {
+        "aarch64": "https://github.com/ACINQ/phoenixd/releases/download/v0.5.1/phoenix-0.5.1-jvm.zip",
+        "x86_64": "https://github.com/ACINQ/phoenixd/releases/download/v0.5.1/phoenix-0.5.1-linux-x64.zip"
+    },
+    "supports_app_page": true,
+    "supports_testnet": false,
+    "http_port": "9740",
+    "requires_bitcoin": false,
+    "requires_docker_image_installation": true,
+    "requires_electrs": false,
+    "requires_lightning": false,
+    "show_on_application_page": true,
+    "show_on_homepage": true,
+    "show_on_status_page": true,
+    "hide_status_icon": false,
+    "app_tile_name": "phoenixd",
+    "app_tile_running_status_text": "Running",
+    "app_tile_button_text": "Info",
+    "app_tile_button_href": "/app/phoenixd/info",
+    "app_page_show_open_button": false,
+    "app_page_content": [
+        {
+            "heading": "Instructions",
+            "content": [
+                "See phonixd app screenshots from Mynode App Market to see usage.",
+                "Enjoy!"
+            ]
+        }
+    ],
+    "can_uninstall": true,
+    "can_reinstall": true,
+    "can_enable_disable": true,
+    "is_beta": true,
+    "is_premium": false,
+    "homepage_section": "apps",
+    "homepage_order": 91,
+    "app_type": "custom",
+    "sdk_version": 2
+}

@@ -1,0 +1,75 @@
+# bash programmable completion for phoenix-cli
+# copy to /etc/bash_completion.d and restart your shell session
+# Copyright (c) by Andreas M. Antonopoulos
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+# adapted to phoenixd by tlindi 2025
+
+_phoenix_cli() {
+    local cur prev words=() cword
+    local phoenix_cli
+    local help_output
+    local timeout_duration=10  # Timeout duration in seconds
+
+    # phoenix-cli might not be in $PATH
+    phoenix_cli="$1"
+
+    COMPREPLY=()
+    _get_comp_words_by_ref -n = cur prev words cword
+
+    # Ensure phoenix-cli --help completes before continuing
+    help_output=$(timeout "$timeout_duration" $phoenix_cli --help 2>/dev/null)
+    if [[ $? -ne 0 ]]; then
+        echo "[ERROR] 'phoenix-cli --help' either timed out or failed to execute. Ensure the command exists and is working." >&2
+        return 1
+    fi
+
+    case "$prev" in
+        # examples of further completion
+        bumptee)
+            COMPREPLY=( $( compgen -W "--feerateSatByte=<int>" -- "$cur" ) )
+            return 0
+            ;;
+        lnurlpay)
+           COMPREPLY=( $( compgen -W "--amountSat=<int> --lnurl=<text> --message=<optional_text> -h --help" -- "$cur" ) )
+            return 0
+            ;;
+        closechannel)
+           COMPREPLY=( $( compgen -W "--channelId=<value> --address=<text> --feerateSatByte=<int> -h --help" -- "$cur" ) )
+            return 0
+            ;;
+        createinvoice)
+           COMPREPLY=( $( compgen -W "--amountSat=<int> --description, --desc=<value> --descriptionHash, --desc-hash=<value> --expirySeconds=<int> --externalId=<text> --webhook>            return 0
+            ;;
+        payinvoice)
+            COMPREPLY=( $( compgen -W "--amountSat=<int> --invoice=<text> -h --help" -- "$cur" ) )
+            return 0
+            ;;
+        sendtoaddress)
+            COMPREPLY=( $( compgen -W "--amountSat=<int> --address=<text> --feerateSatByte=<int> -h --help" -- "$cur" ) )
+            return 0
+            ;;
+    esac
+
+    # Process output from phoenix-cli --help
+    case "$cur" in
+        -*=*)   # Prevent nonsense completions
+            return 0
+            ;;
+        *)
+            local helpopts globalcmds
+
+            # Get global options, starting with --
+            if [[ -z "$cur" || "$cur" =~ ^- ]]; then
+                globalcmds=$(echo "$help_output" | awk '$1 ~ /^-/ { sub(/,/, ""); print $1}')
+            fi
+
+            # Get regular commands
+            if [[ -z "$cur" || "$cur" =~ ^[a-z] ]]; then
+                helpopts=$(echo "$help_output" | awk '$1 ~ /^[a-z]/ { print $1; }')
+            fi
+
+            COMPREPLY=( $(compgen -W "$helpopts $globalcmds" -X "*," -- "$cur") )
+    esac
+} &&
+complete -F _phoenix_cli phoenix-cli
