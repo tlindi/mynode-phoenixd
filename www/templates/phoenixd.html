@@ -84,13 +84,14 @@
                         <button class="ui-button ui-widget ui-corner-all mynode_button app_page_button install_button" onclick="install('{{ app.name }}', '{{ app.short_name }}');">Install</button>
                     {% else %}
                         <!-- Open -->
+<!--
                         {% if app.is_enabled and app.app_page_show_open_button %}
                             {% if app.http_port != "" or app.https_port != "" %}
                                 <button class="ui-button ui-widget ui-corner-all mynode_button app_page_button" onclick="open_app_in_new_tab('{{app.http_port}}', '{{app.https_port}}', false, '{APP_TOR_ADDRESS}')">Open</button>
                                 <div class="divider button_divider"></div>
                             {% endif %}
                         {% endif %}
-
+-->
                         <!-- Get Info Button -->
                         {% if app.is_enabled %}
                             <button class="ui-button ui-widget ui-corner-all mynode_button app_page_button" onclick="getInfo()">GetInfo</button>

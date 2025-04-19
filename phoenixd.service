@@ -19,19 +19,24 @@ ExecStartPre=/bin/bash -c 'if [ -f /usr/bin/service_scripts/pre_phoenixd.sh ]; t
 
 #
 #ExecStart=FILL_IN_EXECSTART
-
 # docker
-ExecStart=docker run --rm --name phoenixd --publish 9740:9740 --volume /mnt/hdd/mynode/phoenixd:/.phoenix --env PHOENIX_DATADIR='/.phoenix' --env WORK_DIR='/phoenix' phoenixd
+ExecStart=docker run --rm --name phoenixd \
+    --publish 9740:9740 \
+    --volume /mnt/hdd/mynode/phoenixd:/.phoenix \
+    --env PHOENIX_DATADIR='/.phoenix' \
+    --env WORK_DIR='/phoenix' \
+    phoenixd
 
 ExecStartPost=/bin/bash -c 'if [ -f /usr/bin/service_scripts/post_phoenixd.sh ]; then /bin/bash /usr/bin/service_scripts/post_phoenixd.sh; fi'
 
 #
 #ExecStop=FILL_IN_EXECSTOP_AND_UNCOMMENT_IF_NEEDED
 #
-ExecStop=kill $(pgrep -f 'fr.acinq.phoenixd.PhoenixdKt')
+ExecStop=/bin/bash -c 'docker ps -q -f name=phoenixd && docker stop phoenixd || true'
 
-#User=phoenixd
-#Group=phoenixd
+
+User=bitcoin
+Group=bitcoin
 Type=simple
 TimeoutSec=120
 Restart=always
