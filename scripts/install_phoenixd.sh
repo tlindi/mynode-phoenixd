@@ -32,10 +32,10 @@ git checkout $VERSION-patched-with-cli
 #git checkout 75ae285dd41833f58f409990635e84f2607c1a6e
 #
 # Create a local branch to avoid detached HEAD issues
-git switch -c v0.5.1-patched-with-cli
+#git switch -c v0.5.1-patched-with-cli
 # Ensure the repository is strictly at v0.5.1 without pulling new commits
-git fetch origin v0.5.1-patched-with-cli
-git reset --hard v0.5.1-patched-with-cli
+#git fetch origin v0.5.1-patched-with-cli
+#git reset --hard v0.5.1-patched-with-cli
 
 # (*) patch docker 0.5.1-patched which ACINQ forgot from release
 #not needed with tlindi repo
