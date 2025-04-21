@@ -15,7 +15,7 @@
         "usage: via API or from console: docker exec phoenixd bin/phoenix-cli getinfo",
         "phoenixd is the server equivalent of the popular phoenix wallet for mobile.",
         "It is written in Kotlin Multiplatform and runs natively on",
-        "Linux, MacOS (x86 and ARM), and Windows (WSL).",
+        "Linux (x86 and ARM), MacOS (x86 and ARM), and Windows (WSL).",
         ">self custodial - your keys, your coins no email, no signup",
         ">absolutely -NO configuration get started in seconds",
         ">easy http api - webhook/websocket notifications",
