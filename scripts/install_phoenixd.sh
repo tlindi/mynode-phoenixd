@@ -39,6 +39,11 @@ sed -i 's/dc7f12417c70cc9af1e1f7d7f077910f8b198a98/ab9a026432a61d986d83c72df5619
 sed -i 's/distTar/jvmDistTar/g' .docker/Dockerfile # cradled task
 sed -i 's/distributions\/phoenix-/distributions\/phoenixd-/g' .docker/Dockerfile # tar filename
 sed -i 's/xvf phoenix-/xvf phoenixd-/g' .docker/Dockerfile # tar extract filename
+##
+# Add cli building into Dockerfile as additional gradlew task
+#
+sed -i '/&& \.\/gradlew jvmDistTar/i\
+    && ./gradlew startScriptsForJvmPhoenix-cli \\' .docker/Dockerfile
 
 # patch docker internal user to match MyNode bitcoin user
 # so access rights on /mnt/hdd/mynode/phoenixd look similar to other apps ie "bitcoin:bitcoin"
