@@ -25,6 +25,7 @@ ExecStart=docker run --rm --name phoenixd \
     --volume /mnt/hdd/mynode/phoenixd:/.phoenix \
     --env PHOENIX_DATADIR='/.phoenix' \
     --env WORK_DIR='/phoenix' \
+    --user $(id -u bitcoin):$(id -g bitcoin) \
     phoenixd
 
 ExecStartPost=/bin/bash -c 'if [ -f /usr/bin/service_scripts/post_phoenixd.sh ]; then /bin/bash /usr/bin/service_scripts/post_phoenixd.sh; fi'
