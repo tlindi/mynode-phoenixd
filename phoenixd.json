@@ -53,11 +53,11 @@
             "heading": "Instructions",
             "content": [
                 "usage:",
-                "-API: http port 9740",
-                "-Linux console: eg: docker exec phoenixd bin/phoenix-cli getinfo",
                 "-App Page: Homepage Click - phoenixd - Info ",
+                "-Linux console: eg: docker exec phoenixd bin/phoenix-cli getinfo",
+                "-API: http port 9740",
                 "",
-		"Enjoy!"
+                "Enjoy!"
             ]
         }
     ],

@@ -32,10 +32,10 @@ git checkout $VERSION-patched-with-cli
 #git checkout 75ae285dd41833f58f409990635e84f2607c1a6e
 #
 # Create a local branch to avoid detached HEAD issues
-git switch -c v0.5.1-patch
+git switch -c v0.5.1-patched-with-cli
 # Ensure the repository is strictly at v0.5.1 without pulling new commits
-git fetch origin v0.5.1
-git reset --hard v0.5.1
+git fetch origin v0.5.1-patched-with-cli
+git reset --hard v0.5.1-patched-with-cli
 
 # (*) patch docker 0.5.1-patched which ACINQ forgot from release
 #not needed with tlindi repo
@@ -62,8 +62,8 @@ sed -i 's/uid 1000/uid 1001/g' .docker/Dockerfile
 #sudo -u bitcoin docker build -t phoenixd:latest .docker
 #
 docker images | grep phoenixd | awk '{print $3}' | xargs -r docker rmi -f
-docker build -t phoenixd:v0.5.1-patched -f .docker/Dockerfile .
-docker tag phoenixd:v0.5.1-patched phoenixd
+docker build -t phoenixd:v0.5.1-patched-with-cli -f .docker/Dockerfile .
+docker tag phoenixd:v0.5.1-patched-with-cli phoenixd
 
 # create data dir and restore latest found backup
 #
@@ -88,10 +88,12 @@ echo "Continuing with installation..."
 
 export PHOENIXD_BACKUP_DIR=/mnt/hdd/mynode/phoenixd_backup
 if [ -d "$PHOENIXD_BACKUP_DIR" ]; then
-    export BACKUP_FILE=$(ls -1 $PHOENIXD_BACKUP_DIR | awk -F'[_]' '{print $NF, $0}' | sort -n | awk '{print $2}' | tail -1)
+    export BACKUP_FILE=$(ls -1 "$PHOENIXD_BACKUP_DIR"/*.tar.gz | \
+        sed 's/.*\(.\{15\}\)\.tar\.gz$/\1 &/' | \
+        sort | tail -1 | cut -d' ' -f2-)
 
-    echo Restoring latest found backup: $PHOENIXD_BACKUP_DIR/$BACKUP_FILE
-    tar xzvf "$PHOENIXD_BACKUP_DIR/$BACKUP_FILE" --strip-components=1 -C "$PHOENIXD_DATA_DIR"
+    echo Restoring latest found backup: $BACKUP_FILE
+    tar xzvf "$BACKUP_FILE" --strip-components=1 -C "$PHOENIXD_DATA_DIR"
 else
     echo No restoreable backup was found. Starting with new phoenixd wallet.
 fi
