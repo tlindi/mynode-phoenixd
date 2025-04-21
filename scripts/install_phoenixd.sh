@@ -52,8 +52,11 @@ git checkout $VERSION-patched-with-cli
 
 # patch docker internal user to match MyNode bitcoin user
 # so access rights on /mnt/hdd/mynode/phoenixd look similar to other apps ie "bitcoin:bitcoin"
-sed -i 's/gid 1000/gid 1001/g' .docker/Dockerfile
-sed -i 's/uid 1000/uid 1001/g' .docker/Dockerfile
+export BTC_USR=$(id -u bitcoin)
+export BTC_GRP=$(id -g bitcoin)
+echo "BTC_USR=$BTC_USR, BTC_GRP=$BTC_GRP"
+sed -i "s/gid 1000/gid $BTC_USR/g" .docker/Dockerfile
+sed -i "s/uid 1000/uid $BTC_GRP/g" .docker/Dockerfile
 
 # sudo docker ps -a
 # sudo docker remove <CONTAINER_ID>
@@ -88,14 +91,19 @@ echo "Continuing with installation..."
 
 export PHOENIXD_BACKUP_DIR=/mnt/hdd/mynode/phoenixd_backup
 if [ -d "$PHOENIXD_BACKUP_DIR" ]; then
-    export BACKUP_FILE=$(ls -1 "$PHOENIXD_BACKUP_DIR"/*.tar.gz | \
+    # Capture backup files, suppress error output if none are found
+    export BACKUP_FILE=$(ls -1 "$PHOENIXD_BACKUP_DIR"/*.tar.gz 2>/dev/null | \
         sed 's/.*\(.\{15\}\)\.tar\.gz$/\1 &/' | \
         sort | tail -1 | cut -d' ' -f2-)
 
-    echo Restoring latest found backup: $BACKUP_FILE
-    tar xzvf "$BACKUP_FILE" --strip-components=1 -C "$PHOENIXD_DATA_DIR"
+    if [ -n "$BACKUP_FILE" ]; then
+        echo "Restoring latest found backup: $BACKUP_FILE"
+        tar xzvf "$BACKUP_FILE" --strip-components=1 -C "$PHOENIXD_DATA_DIR"
+    else
+        echo "No restoreable backup was found. Starting with a new phoenixd wallet."
+    fi
 else
-    echo No restoreable backup was found. Starting with new phoenixd wallet.
+    echo "Backup directory $PHOENIXD_BACKUP_DIR does not exist. Starting with a new phoenixd wallet."
 fi
 
 echo "================== DONE INSTALLING APP ================="

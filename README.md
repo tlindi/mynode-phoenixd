@@ -7,10 +7,6 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 ![myNodeBTC-phoenixd](https://raw.githubusercontent.com/tlindi/mynode-phoenixd/refs/heads/main/screenshots/1.png)
 # ToDo
 
-### docker user recheck
-* bitcoin / docker user setting must be mapped dynamic. 
-Is is not always 1001:1001 eg on Debian amd64 it was 1002:1002
-
 ### phoenix-cli needs 
 * commandline wrapper bin to docker exec
 * bash completitioner
@@ -20,6 +16,12 @@ Is is not always 1001:1001 eg on Debian amd64 it was 1002:1002
 * backup button
 
 # Changelog
+
+### docker user recheck
+* bitcoin / docker user setting mapped dynamically 
+
+### backup restore error
+tried to restore even backup folder contained no files
 
 ### Change to user tlindi repo
 * remove "patching" from install_phoenixd.sh,
