@@ -5,8 +5,14 @@ NO WARRANTIES OF ANY KIND!
 TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
 # ToDo
+
 ### phoenix-cli needs 
 * commandline wrapper bin to docker exec
+* bash completitioner
+
+### www needs
+* copy instructions from app.json to info page template
+* backup button
 
 # Changelog
 
