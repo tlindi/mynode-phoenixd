@@ -5,10 +5,12 @@ NO WARRANTIES OF ANY KIND!
 TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
 # KNOWN ISSUES
-* phoenix-cli is missing
- workaroud is to use pwallet App
-* old screenshot
- ToDo 
+### phoenix-cli needs 
+* bitcoin users ~.phoenix link to hdd/mynode/phoenixd
+* commandline wrapper bin to docker exec
+
+###old screenshot 
+* ToDo
 
 # Changelog
 
