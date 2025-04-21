@@ -10,6 +10,11 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
 # Changelog
 
+### Change to user tlinid repo
+-remove "patching" from install_phoenixd.sh,
+-and use phoenixd upstream commits
+-and use phoenixd upstream customized Dockerfile
+
 ### v0.5.1-patched+cli
 -Enable phoenix-cli build by patching Dockerfile
 
