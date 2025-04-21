@@ -18,10 +18,15 @@ echo "==================== INSTALLING APP ===================="
 # TODO: Perform installation steps here
 
 # use ACINQ docker
-git clone http://www.github.com/acinq/phoenixd.git
+#git clone http://www.github.com/acinq/phoenixd.git
+
+# use tlindi repo for patched v0.5.1 and Dockerfile
+git clone http://www.github.com/tlindi/phoenixd.git
+
 cd phoenixd
 git fetch --tags origin
-git checkout $VERSION
+#git checkout $VERSION
+git checkout $VERSION-patched-with-cli
 #
 # get 0.5.1 acinq patched commit (will do -patch "manually" at * below)
 #git checkout 75ae285dd41833f58f409990635e84f2607c1a6e
@@ -33,17 +38,17 @@ git fetch origin v0.5.1
 git reset --hard v0.5.1
 
 # (*) patch docker 0.5.1-patched which ACINQ forgot from release
-#
-sed -i 's/v0.5.0/v0.5.1/g' .docker/Dockerfile # version
-sed -i 's/dc7f12417c70cc9af1e1f7d7f077910f8b198a98/ab9a026432a61d986d83c72df5619014414557be/g' .docker/Dockerfile # commithash
-sed -i 's/distTar/jvmDistTar/g' .docker/Dockerfile # cradled task
-sed -i 's/distributions\/phoenix-/distributions\/phoenixd-/g' .docker/Dockerfile # tar filename
-sed -i 's/xvf phoenix-/xvf phoenixd-/g' .docker/Dockerfile # tar extract filename
+#not needed with tlindi repo
+#sed -i 's/v0.5.0/v0.5.1/g' .docker/Dockerfile # version
+#sed -i 's/dc7f12417c70cc9af1e1f7d7f077910f8b198a98/ab9a026432a61d986d83c72df5619014414557be/g' .docker/Dockerfile # commithash
+#sed -i 's/distTar/jvmDistTar/g' .docker/Dockerfile # cradled task
+#sed -i 's/distributions\/phoenix-/distributions\/phoenixd-/g' .docker/Dockerfile # tar filename
+#sed -i 's/xvf phoenix-/xvf phoenixd-/g' .docker/Dockerfile # tar extract filename
 ##
 # Add cli building into Dockerfile as additional gradlew task
-#
-sed -i '/&& \.\/gradlew jvmDistTar/i\
-    && ./gradlew startScriptsForJvmPhoenix-cli \\' .docker/Dockerfile
+#not needed with tlindi repo - Dockerfile there has this
+#sed -i '/&& \.\/gradlew jvmDistTar/i\
+#    && ./gradlew startScriptsForJvmPhoenix-cli \\' .docker/Dockerfile
 
 # patch docker internal user to match MyNode bitcoin user
 # so access rights on /mnt/hdd/mynode/phoenixd look similar to other apps ie "bitcoin:bitcoin"
