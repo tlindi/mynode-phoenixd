@@ -4,15 +4,14 @@ NO WARRANTIES OF ANY KIND!
 
 TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
-# KNOWN ISSUES
+# ToDo
 ### phoenix-cli needs 
-* bitcoin users ~.phoenix link to hdd/mynode/phoenixd
 * commandline wrapper bin to docker exec
 
-###old screenshot 
-* ToDo
-
 # Changelog
+
+### v0.5.1-patched+cli
+-Enable phoenix-cli build by patching Dockerfile
 
 ### Commit f6236f0
 -Fix start
