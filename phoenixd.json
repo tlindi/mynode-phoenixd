@@ -12,7 +12,8 @@
     "category": "lightning_app",
     "short_description": "Lightning Wallet Server",
     "description": [
-        "phoenixd is the server equivalent of the popular phoenix wallet for mobile.",
+        "usage: via API or from console: docker exec phoenixd bin/phoenix-cli getinfo",
+		"phoenixd is the server equivalent of the popular phoenix wallet for mobile.",
         "It is written in Kotlin Multiplatform and runs natively on",
         "Linux, MacOS (x86 and ARM), and Windows (WSL).",
         ">self custodial - your keys, your coins no email, no signup",
@@ -51,8 +52,12 @@
         {
             "heading": "Instructions",
             "content": [
-                "See phonixd app screenshots from Mynode App Market to see usage.",
-                "Enjoy!"
+                "usage: 
+				"-API: http port 9740",
+				"-Linux console: eg: docker exec phoenixd bin/phoenix-cli getinfo",
+				"-App Page: Homepage Click - phoenixd - Info ",
+                "",
+		"Enjoy!"
             ]
         }
     ],
