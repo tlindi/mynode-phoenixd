@@ -11,8 +11,8 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 * commandline wrapper bin to docker exec
 * bash completitioner
 
-### www needs
-* copy instructions from app.json to info page template
+### needs to info page template
+* copy instructions from app.json
 * backup button
 
 # Changelog
