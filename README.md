@@ -4,6 +4,7 @@ NO WARRANTIES OF ANY KIND!
 
 TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
+![myNodeBTC-phoenixd](https://raw.githubusercontent.com/tlindi/mynode-phoenixd/refs/heads/main/screenshots/1.png)
 # ToDo
 
 ### phoenix-cli needs 
@@ -16,7 +17,7 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
 # Changelog
 
-### Change to user tlinid repo
+### Change to user tlindi repo
 -remove "patching" from install_phoenixd.sh,
 -and use phoenixd upstream commits
 -and use phoenixd upstream customized Dockerfile
