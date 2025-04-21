@@ -23,7 +23,7 @@ if [ -d /mnt/hdd/mynode/phoenixd ]; then
         chown bitcoin:bitcoin "$BACKUP_PATH" || { echo "Backup path owner couldn't be set."; exit 1; }
     fi
 
-    BACKUP_PHOENIXD_VERSION="v0.5.1-patched"
+    BACKUP_PHOENIXD_VERSION=$(cat /home/bitcoin/.mynode/phoenixd_version)
     BACKUP_PHOENIXD_NODEID=$(ls *.db | head -1 | sed 's/phoenix.mainnet.//g' | sed 's/.db//g')
     BACKUP_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
     BACKUP_FILE="$BACKUP_PATH/phoenixd-$BACKUP_PHOENIXD_VERSION-nodeid_$BACKUP_PHOENIXD_NODEID-$BACKUP_TIMESTAMP.tar.gz"
