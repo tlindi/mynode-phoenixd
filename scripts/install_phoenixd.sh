@@ -40,14 +40,14 @@ sed -i '/&& apt clean/a \
 # \
 WORKDIR /lightning-kmp \' .docker/Dockerfile
 
-grep WORKDIR .docker/Dockerfile
-sleep 20
-
 sed -i '/WORKDIR \/lightning-kmp/a \
 RUN git clone \\\
     https://github.com/ACINQ/lightning-kmp . \\\
     && ./gradlew publishToMavenLocal ' .docker/Dockerfile
 # /sed
+
+grep Maven .docker/Dockerfile
+sleep 20
 
 # use ACINQ docker
 #git clone http://www.github.com/acinq/phoenixd.git
