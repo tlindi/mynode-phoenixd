@@ -46,7 +46,10 @@ RUN git clone \\\
     && ./gradlew publishToMavenLocal ' .docker/Dockerfile
 # /sed
 
-grep Maven .docker/Dockerfile
+sed -i '/\&\& .\/gradlew publishToMavenLocal/a \
+RUN ls -las ~/.m2/repository/fr/acinq/lightning ' .docker/Dockerfile
+
+grep m2 .docker/Dockerfile
 sleep 20
 
 # use ACINQ docker
