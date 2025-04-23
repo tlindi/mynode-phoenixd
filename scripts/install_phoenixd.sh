@@ -116,7 +116,7 @@ sed -i 's|\./gradlew jvmDistTar|\./gradlew jvmDistZip|' .docker/Dockerfile
 #' .docker/Dockerfile
 # /sed
 grep DistZip .docker/Dockerfile
-sed -i 's|^\([[:space:]]*\)&& ./gradlew jvmDistZip$|\1\&\& ./gradlew jvmDistZip --refresh-wdependencies|' .docker/Dockerfile
+sed -i 's|^\([[:space:]]*\)&& ./gradlew jvmDistZip$|\1\&\& ./gradlew jvmDistZip --refresh-dependencies|' .docker/Dockerfile
 grep DistZip .docker/Dockerfile
 
 # Add cli building into Dockerfile as additional gradlew task
