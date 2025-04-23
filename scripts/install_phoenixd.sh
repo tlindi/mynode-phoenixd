@@ -40,9 +40,15 @@ sed -i '/&& apt clean/a \
 WORKDIR /lightning-kmp \' .docker/Dockerfile
 
 sed -i '/WORKDIR \/lightning-kmp/a \
-RUN git clone \\\
+RUN git clone --recursive --single-branch --branch kotlin-2.1.20 \\\
     https://github.com/ACINQ/lightning-kmp . \\\
-    && ./gradlew publishToMavenLocal ' .docker/Dockerfile
+    && ./gradlew publishToMavenLocal --info' .docker/Dockerfile
+
+# Working
+#sed -i '/WORKDIR \/lightning-kmp/a \
+#RUN git clone \\\
+#    https://github.com/ACINQ/lightning-kmp . \\\
+#    && ./gradlew publishToMavenLocal ' .docker/Dockerfile
 # /sed
 
 #
@@ -134,8 +140,8 @@ grep '^[[:space:]]*&& \.\/gradlew jvmDistZip --refresh-dependencies' .docker/Doc
 echo grep end
 
 # Add cli building into Dockerfile as additional gradlew task
-sed -i '/\&\& .\/gradlew jvmDistZip --refresh-dependencies/i \
-    && ./gradlew startScriptsForJvmPhoenix-cli --refresh-dependencies \\' .docker/Dockerfile
+sed -i '/\&\& .\/gradlew jvmDistZip --refresh-dependencies --info/i \
+    && ./gradlew startScriptsForJvmPhoenix-cli --refresh-dependencies --info \\' .docker/Dockerfile
 
 #sed -i '/&& \.\/gradlew jvmDistZip --refresh-dependencies/a \
 #    && ./gradlew startScriptsForJvmPhoenix-cli --refresh-dependencies ' .docker/Dockerfile
