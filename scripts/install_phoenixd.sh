@@ -38,7 +38,7 @@ sed -i '/&& apt clean/a \
 # built lightning-kmp \
 # see https://github.com/ACINQ/phoenixd/pull/169 \
 # \
-WORKDIR /lightning-kmp \
+WORKDIR /lightning-kmp
 RUN git clone https://github.com:ACINQ/lightning-kmp.git . \
     && ./gradlew publishToMavenLocal \' .docker/Dockerfile
 # /sed
