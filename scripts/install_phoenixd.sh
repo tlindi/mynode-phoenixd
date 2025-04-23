@@ -124,13 +124,13 @@ echo grep end
 
 # Add cli building into Dockerfile as additional gradlew task
 sed -i '/\&\& .\/gradlew jvmDistZip --refresh-dependencies/i \
-    && ./gradlew startScriptsForJvmPhoenix-cli --refresh-dependencies ' .docker/Dockerfile
+    && ./gradlew startScriptsForJvmPhoenix-cli --refresh-dependencies &&' .docker/Dockerfile
 
 #sed -i '/&& \.\/gradlew jvmDistZip --refresh-dependencies/a \
 #    && ./gradlew startScriptsForJvmPhoenix-cli --refresh-dependencies ' .docker/Dockerfile
 # /sed
 grep '\-cli' .docker/Dockerfile
-sleep 15
+
 #
 ### convert Dockerfile tar binary extract commands to unzip
 #
