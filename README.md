@@ -7,6 +7,10 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 ![myNodeBTC-phoenixd](https://raw.githubusercontent.com/tlindi/mynode-phoenixd/refs/heads/main/screenshots/1.png)
 # ToDo
 
+### use native java packages
+* add unzip to docker buid environment and 
+* change Dockerfile to use zip
+
 ### phoenix-cli needs 
 * commandline wrapper bin to docker exec
 * bash completitioner
