@@ -166,7 +166,7 @@ grep MARKER .docker/Dockerfile
 ### ARG CACHEBUST will inserted to Dockerfile with 
 ### value comaing from ENV $CACHEBUST
 #####
-sed -i '/#ZIP_PROCESS_MARKER/a \
+sed -i '/#ZIP_PROCESS_MARKER/i \
 ARG CACHEBUST ' .docker/Dockerfile
 #
 #sed -i '/ARG CACHEBUST/a \
