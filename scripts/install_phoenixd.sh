@@ -1,4 +1,5 @@
 #!/bin/bash
+#
 
 #** source /usr/share/mynode/mynode_device_info.sh
 #** source /usr/share/mynode/mynode_app_versions.sh
@@ -51,15 +52,6 @@ RUN git clone --recursive --single-branch --branch kotlin-2.1.20 \\\
 #    && ./gradlew publishToMavenLocal ' .docker/Dockerfile
 # /sed
 
-#
-sed -i '/\&\& .\/gradlew publishToMavenLocal/a \
-ARG CACHEBUST ' .docker/Dockerfile
-#
-#sed -i '/ARG CACHEBUST/a \
-#RUN echo "Cache bust value: ${CACHEBUST}" ' .docker/Dockerfile
-sed -i "/ARG CACHEBUST/a \\
-RUN echo \"Cache bust value: ${CACHEBUST}\"" .docker/Dockerfile
-#
 #sed -i '/RUN echo "Cache bust value: ${CACHEBUST}"/a \
 #RUN ls -la ~/.m2/repository/fr/acinq/lightning/lightning-kmp-core ' .docker/Dockerfile
 sed -i "/RUN echo \"Cache bust value: ${CACHEBUST}\"/a \\
@@ -169,17 +161,40 @@ sed -i 's|RUN tar --strip-components=1 -xvf phoenixd-\*-jvm\.tar|#ZIP_PROCESS_MA
 
 grep MARKER .docker/Dockerfile
 
+##### Add these CACHEBUST Lines just before debug target
+### replace sed -i '/<PREVIOUS_LINE_CONTENT>/a \ and 
+### ARG CACHEBUST will inserted to Dockerfile with 
+### value comaing from ENV $CACHEBUST
+#####
+sed -i '/#ZIP_PROCESS_MARKER/a \
+ARG CACHEBUST ' .docker/Dockerfile
+#
+#sed -i '/ARG CACHEBUST/a \
+#RUN echo "Cache bust value: ${CACHEBUST}" ' .docker/Dockerfile
+sed -i "/ARG CACHEBUST/a \\
+RUN echo \"Cache bust value: ${CACHEBUST}\"" .docker/Dockerfile
+#
+
+
+
 sed -i '/#ZIP_PROCESS_MARKER/ a\
 # \
-# Zip processing(multiline for dabuggin) \
+# Zip processing(multiline for debuggin) \
 # \
-RUN echo user $(id) \&\&\
-RUN pwd \&\&\
-RUN mkdir -p /phoenix/bin \&\&\
-RUN ls -lasR \&\&\
-RUN unzip -jo phoenixd-\*-jvm.zip \*bin/phoenix\* -d /phoenix/bin \&\&\
+RUN echo user $(id) \
+RUN pwd \
+RUN mkdir -p /phoenix/bin \
+RUN ls -lasR \
+RUN unzip -jo phoenixd-\*-jvm.zip \*bin/phoenix\* -d /phoenix/bin \
 RUN ls -lasR \
 ' .docker/Dockerfile
+#RUN echo user $(id) \&\&\
+#RUN pwd \&\&\
+#RUN mkdir -p /phoenix/bin \&\&\
+#RUN ls -lasR \&\&\
+#RUN unzip -jo phoenixd-\*-jvm.zip \*bin/phoenix\* -d /phoenix/bin \&\&\
+#RUN ls -lasR \
+#' .docker/Dockerfile
 
 ##sed -i 's|^#PHX_MARKER$|RUN echo user $(id) \&\& pwd \&\& mkdir -p /phoenix/bin \&\& ls -lasR \&\& unzip -jo phoenixd-*-jvm.zip *bin/phoenix* -d /phoenix/bin \&\& ls -lasR |' .docker/Dockerfile
 #sed -i 's|^#PHX_MARKER$|RUN pwd \&\& ls -las \&\& unzip -l *.zip \&\& unzip -jo phoenixd-*-jvm.zip */bin/* -d . \&\&  |' .docker/Dockerfile
@@ -226,8 +241,8 @@ else echo "Verify: phoenixd-jvm images still present:";
    echo "$verify";
 fi
 
-#docker build --build-arg TARGET_PLATFORM=jvm -t phoenixd-jvm -f .docker/Dockerfile .
-docker build --progress=plain --build-arg TARGET_PLATFORM=jvm -t phoenixd-jvm -f .docker/Dockerfile .
+docker build --build-arg TARGET_PLATFORM=jvm -t phoenixd-jvm -f .docker/Dockerfile .
+#docker build --progress=plain --build-arg TARGET_PLATFORM=jvm -t phoenixd-jvm -f .docker/Dockerfile .
 
 verifyImage=$(docker images | grep phoenixd-jvm)
 if [ -z "$verifyImage" ]; then
