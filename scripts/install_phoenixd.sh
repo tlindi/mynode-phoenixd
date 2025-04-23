@@ -241,8 +241,10 @@ else echo "Verify: phoenixd-jvm images still present:";
    echo "$verify";
 fi
 
-docker build --build-arg TARGET_PLATFORM=jvm -t phoenixd-jvm -f .docker/Dockerfile .
+#docker build --build-arg TARGET_PLATFORM=jvm -t phoenixd-jvm -f .docker/Dockerfile .
 #docker build --progress=plain --build-arg TARGET_PLATFORM=jvm -t phoenixd-jvm -f .docker/Dockerfile .
+docker build --progress=plain -t phoenixd-jvm -f .docker/Dockerfile .
+docker build --progress=plain -f .docker/Dockerfile .
 
 verifyImage=$(docker images | grep phoenixd-jvm)
 if [ -z "$verifyImage" ]; then
