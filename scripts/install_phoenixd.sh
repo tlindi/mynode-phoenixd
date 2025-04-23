@@ -45,8 +45,13 @@ RUN git clone \\\
     && ./gradlew publishToMavenLocal ' .docker/Dockerfile
 # /sed
 
+
 sed -i '/\&\& .\/gradlew publishToMavenLocal/a \
-RUN ls -las ~/.m2/repository/fr/acinq/lightning ' .docker/Dockerfile
+ARG CACHEBUST ' .docker/Dockerfile
+sed -i '/ARG CACHEBUST/a \
+RUN echo "Cache bust value: ${CACHEBUST}" ' .docker/Dockerfile
+sed -i '/RUN echo "Cache bust value: ${CACHEBUST}"/a \
+RUN ls -la ~/.m2/repository/fr/acinq/lightning/lightning-kmp-core ' .docker/Dockerfile
 
 grep m2 .docker/Dockerfile
 
