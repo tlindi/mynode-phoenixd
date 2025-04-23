@@ -204,9 +204,9 @@ RUN ls -lasR \
 #sed -i 's|^#PHX_MARKER$|RUN echo user $(id) \&\& pwd \&\& mkdir -p /phoenix/bin \&\& ls -lasR \&\& unzip -jo phoenixd-*-jvm.zip *bin/phoenix* -d /phoenix/bin \&\& ls -lasR |' .docker/Dockerfile
 
 ##
-# DEBUGGING BASH
+# UNCOMMENT for DEBUGGING BASH (but this no works)
 ##
-sed -i 's|^ENTRYPOINT.*|ENTRYPOINT ["/bin/bash"]|' .docker/Dockerfile
+#sed -i 's|^ENTRYPOINT.*|ENTRYPOINT ["/bin/bash"]|' .docker/Dockerfile
 #
 
 ###
