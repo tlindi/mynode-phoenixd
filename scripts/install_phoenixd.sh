@@ -38,7 +38,7 @@ sed -i '/&& apt clean/a \
 # built lightning-kmp \
 # see https://github.com/ACINQ/phoenixd/pull/169 \
 # \
-WORKDIR /lightning-kmp
+WORKDIR /lightning-kmp \
 RUN git clone https://github.com:ACINQ/lightning-kmp.git . \
     && ./gradlew publishToMavenLocal \' .docker/Dockerfile
 # /sed
@@ -154,6 +154,17 @@ RUN ls -lasR \
 #
 #sed -i 's|^#PHX_MARKER$|RUN echo user $(id) \&\& pwd \&\& mkdir -p /phoenix/bin \&\& ls -lasR \&\& unzip -jo phoenixd-*-jvm.zip *bin/phoenix* -d /phoenix/bin \&\& ls -lasR |' .docker/Dockerfile
 
+##
+# DEBUGGING BASH
+##
+sed -i 's|^ENTRYPOINT.*|ENTRYPOINT ["/bin/bash"]|' .docker/Dockerfile
+#
+
+###
+#
+# finetuning
+#
+###
 # patch docker internal user to match MyNode bitcoin user
 # so access rights on /mnt/hdd/mynode/phoenixd look similar to other apps ie "bitcoin:bitcoin"
 #** export BTC_USR=$(id -u bitcoin)
