@@ -98,6 +98,7 @@ sed -z -i 's|\&\& test `git rev-parse HEAD` = ${PHOENIXD_COMMIT_HASH} \|\| exit 
 #sed -i 's/^FROM/from/g' .docker/Dockerfiles
 sed -i 's/AS BUILD/AS build/g' .docker/Dockerfile
 sed -i 's/as FINAL/AS final/g' .docker/Dockerfile
+#TODO --from=BUILD -> --from=build
 
 ### Lets prepare to native-way with using DistZip
 # everywhere starting from fallback option "jvm"

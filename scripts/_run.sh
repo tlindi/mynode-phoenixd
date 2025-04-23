@@ -1,0 +1,1 @@
+docker run -d --name phoenixd -p 8080:8080 phoenixd-auto:latest
