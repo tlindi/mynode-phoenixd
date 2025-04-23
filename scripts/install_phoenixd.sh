@@ -1,4 +1,4 @@
-
+	
 #!/bin/bash
 
 #** source /usr/share/mynode/mynode_device_info.sh
@@ -38,9 +38,11 @@ sed -i '/&& apt clean/a \
 # built lightning-kmp \
 # see https://github.com/ACINQ/phoenixd/pull/169 \
 # \
-WORKDIR /lightning-kmp \
+WORKDIR /lightning-kmp \' .docker/Dockerfile
+
+sed -i '/WORKDIR \/lightning-kmp/a \
 RUN git clone https://github.com:ACINQ/lightning-kmp.git . \
-    && ./gradlew publishToMavenLocal \' .docker/Dockerfile
+    && ./gradlew publishToMavenLocal ' .docker/Dockerfile
 # /sed
 
 # use ACINQ docker
@@ -74,7 +76,7 @@ sed -z -i 's|\&\& test `git rev-parse HEAD` = ${PHOENIXD_COMMIT_HASH} \|\| exit 
 # Ensure the repository is strictly at v0.5.1 without pulling new commits
 #git fetch origin v0.5.1-patched-with-cli
 #git reset --hard v0.5.1-patched-with-cli
-7
+
 ##
 # Patch Casings in Dockerfile to fix ISSUE #172
 # https://github.com/ACINQ/phoenixd/issues/172
