@@ -1,4 +1,3 @@
-	
 #!/bin/bash
 
 #** source /usr/share/mynode/mynode_device_info.sh
@@ -50,7 +49,6 @@ sed -i '/\&\& .\/gradlew publishToMavenLocal/a \
 RUN ls -las ~/.m2/repository/fr/acinq/lightning ' .docker/Dockerfile
 
 grep m2 .docker/Dockerfile
-#sleep 20
 
 # use ACINQ docker
 #git clone http://www.github.com/acinq/phoenixd.git
@@ -95,7 +93,7 @@ sed -i 's/as FINAL/AS final/g' .docker/Dockerfile
 ### Lets prepare to native-way with using DistZip
 # everywhere starting from fallback option "jvm"
 #
-sed -i 's#\./gradlew jvmDistTar#\./gradlew jvmDistZip#' .docker/Dockerfile
+sed -i 's|\./gradlew jvmDistTar|\./gradlew jvmDistZip|' .docker/Dockerfile
 #
 # here will come CASE CLAUSE to HANDLE ALL ARCHs
 #
@@ -117,11 +115,22 @@ sed -i 's#\./gradlew jvmDistTar#\./gradlew jvmDistZip#' .docker/Dockerfile
     # END ARCH-BASED BUILD LOGIC
 #' .docker/Dockerfile
 # /sed
+grep DistZip .docker/Dockerfile
+sed -i 's|^\([[:space:]]*\)&& ./gradlew jvmDistZip$|\1\&\& ./gradlew jvmDistZip --refresh-dependencies|' .docker/Dockerfile
 
+#sed -i 's|[[:space:]]*&&[[:space:]]\+./gradlew jvmDistZip$|&& ./gradlew jvmDistZip --refresh-dependencies|' .docker/Dockerfile
+
+#sed -i 's|[[:space:]]*&& \./gradlew jvmDistZip$|&& ./gradlew jvmDistZip --refresh-dependencies|' .docker/Dockerfile
+
+grep DistZip .docker/Dockerfile
+sleep 60
+echo "hupi x"
 # Add cli building into Dockerfile as additional gradlew task
-sed -i '/&& \.\/gradlew jvmDistZip/i\
-    && ./gradlew startScriptsForJvmPhoenix-cli \\' .docker/Dockerfile
+
+sed -i '/&& \.\/gradlew jvmDistZip --refresh-dependencies/a \
+    && ./gradlew startScriptsForJvmPhoenix-cli --refresh-dependencies \\' .docker/Dockerfile
 # /sed
+grep depe .docker/Dockerfile
 
 #
 ### convert Dockerfile tar binary extract commands to unzip
