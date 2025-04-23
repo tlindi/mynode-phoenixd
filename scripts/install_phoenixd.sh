@@ -34,7 +34,7 @@ sed -i '/&& apt clean/a \
 # \
 # --- intentionally supposed to be empty lines here \
 # \
-# To prevent error: fr.acinq.lightning:lightning-kmp-core:1.9.2-SNAPSHOT \
+# To prevent error: https://github.com/ACINQ/phoenixd/issues/170
 # built lightning-kmp \
 # see https://github.com/ACINQ/phoenixd/pull/169 \
 # \
