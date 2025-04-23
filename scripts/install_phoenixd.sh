@@ -34,11 +34,14 @@ sed -i '/&& apt clean/a \
 # \
 # --- intentionally supposed to be empty lines here \
 # \
-# To prevent error: https://github.com/ACINQ/phoenixd/issues/170
+# To prevent error: https://github.com/ACINQ/phoenixd/issues/170 \
 # built lightning-kmp \
 # see https://github.com/ACINQ/phoenixd/pull/169 \
 # \
 WORKDIR /lightning-kmp \' .docker/Dockerfile
+
+grep WORKDIR .docker/Dockerfile
+sleep 20
 
 sed -i '/WORKDIR \/lightning-kmp/a \
 RUN git clone \\\
