@@ -45,11 +45,15 @@ RUN git clone \\\
     && ./gradlew publishToMavenLocal ' .docker/Dockerfile
 # /sed
 
-
+#
 sed -i '/\&\& .\/gradlew publishToMavenLocal/a \
 ARG CACHEBUST ' .docker/Dockerfile
-sed -i '/ARG CACHEBUST/a \
-RUN echo "Cache bust value: ${CACHEBUST}" ' .docker/Dockerfile
+#
+#sed -i '/ARG CACHEBUST/a \
+#RUN echo "Cache bust value: ${CACHEBUST}" ' .docker/Dockerfile
+sed -i "/ARG CACHEBUST/a \\
+RUN echo \"Cache bust value: ${CACHEBUST}\"" .docker/Dockerfile
+
 sed -i '/RUN echo "Cache bust value: ${CACHEBUST}"/a \
 RUN ls -la ~/.m2/repository/fr/acinq/lightning/lightning-kmp-core ' .docker/Dockerfile
 
@@ -121,7 +125,7 @@ sed -i 's|\./gradlew jvmDistTar|\./gradlew jvmDistZip|' .docker/Dockerfile
 #' .docker/Dockerfile
 # /sed
 grep DistZip .docker/Dockerfile
-sed -i 's|^\([[:space:]]*\)&& ./gradlew jvmDistZip$|\1\&\& ./gradlew jvmDistZip --refresh-dependencies|' .docker/Dockerfile
+sed -i 's|^\([[:space:]]*\)&& ./gradlew jvmDistZip$|\1\&\& ./gradlew jvmDistZip --refresh-dependencies --info|' .docker/Dockerfile
 grep DistZip .docker/Dockerfile
 echo grepping
 grep '^[[:space:]]*&& \.\/gradlew jvmDistZip --refresh-dependencies' .docker/Dockerfile
