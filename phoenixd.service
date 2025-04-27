@@ -16,9 +16,8 @@ ExecStartPre=/bin/bash -c '[ "$(cat /home/bitcoin/.mynode/phoenixd_version 2>/de
 
 ExecStartPre=/usr/bin/is_not_shutting_down.sh
 ExecStartPre=/bin/bash -c 'if [ -f /usr/bin/service_scripts/pre_phoenixd.sh ]; then /bin/bash /usr/bin/service_scripts/pre_phoenixd.sh; fi'
+ExecStartPre=+/bin/bash -c 'if [ -f /usr/bin/service_scripts/pre_phoenixd_fix-UIDGRP.sh ]; then /bin/bash /usr/bin/service_scripts/pre_phoenixd_fix-UIDGRP.sh; fi'
 
-#
-#ExecStart=FILL_IN_EXECSTART
 # docker
 ExecStart=/bin/sh -c 'docker run --rm --name phoenixd \
     --publish 9740:9740 \
