@@ -8,6 +8,10 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
 ![myNodeBTC-phoenixd](https://raw.githubusercontent.com/tlindi/mynode-phoenixd/refs/heads/main/screenshots/1.png)
 
+# Known issues
+* UID/GID of data dir must be 1000:1000 as workaround (docker-compose could help)
+* version information setting onto backup file made during install is not transferring to backup filenames on uninstall
+
 # ToDo
 
 ### phoenix-cli needs
