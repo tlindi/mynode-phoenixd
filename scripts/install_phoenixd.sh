@@ -17,56 +17,9 @@ echo "==================== INSTALLING APP ===================="
 
 # TODO: Perform installation steps here
 
-# use ACINQ docker
-#git clone http://www.github.com/acinq/phoenixd.git
-
-# use tlindi repo for patched v0.5.1 and Dockerfile
-git clone http://www.github.com/tlindi/phoenixd.git
-
-cd phoenixd
-git fetch --tags origin
-#git checkout $VERSION
-git checkout $VERSION-patched-with-cli
-#
-# get 0.5.1 acinq patched commit (will do -patch "manually" at * below)
-#git checkout 75ae285dd41833f58f409990635e84f2607c1a6e
-#
-# Create a local branch to avoid detached HEAD issues
-#git switch -c v0.5.1-patched-with-cli
-# Ensure the repository is strictly at v0.5.1 without pulling new commits
-#git fetch origin v0.5.1-patched-with-cli
-#git reset --hard v0.5.1-patched-with-cli
-
-# (*) patch docker 0.5.1-patched which ACINQ forgot from release
-#not needed with tlindi repo
-#sed -i 's/v0.5.0/v0.5.1/g' .docker/Dockerfile # version
-#sed -i 's/dc7f12417c70cc9af1e1f7d7f077910f8b198a98/ab9a026432a61d986d83c72df5619014414557be/g' .docker/Dockerfile # commithash
-#sed -i 's/distTar/jvmDistTar/g' .docker/Dockerfile # cradled task
-#sed -i 's/distributions\/phoenix-/distributions\/phoenixd-/g' .docker/Dockerfile # tar filename
-#sed -i 's/xvf phoenix-/xvf phoenixd-/g' .docker/Dockerfile # tar extract filename
-##
-# Add cli building into Dockerfile as additional gradlew task
-#not needed with tlindi repo - Dockerfile there has this
-#sed -i '/&& \.\/gradlew jvmDistTar/i\
-#    && ./gradlew startScriptsForJvmPhoenix-cli \\' .docker/Dockerfile
-
-# patch docker internal user to match MyNode bitcoin user
-# so access rights on /mnt/hdd/mynode/phoenixd look similar to other apps ie "bitcoin:bitcoin"
-export BTC_USR=$(id -u bitcoin)
-export BTC_GRP=$(id -g bitcoin)
-echo "BTC_USR=$BTC_USR, BTC_GRP=$BTC_GRP"
-sed -i "s/gid 1000/gid $BTC_USR/g" .docker/Dockerfile
-sed -i "s/uid 1000/uid $BTC_GRP/g" .docker/Dockerfile
-
-# sudo docker ps -a
-# sudo docker remove <CONTAINER_ID>
-# docker image list
-# docker rmi phoenixd:latest
-#sudo -u bitcoin docker build -t phoenixd:latest .docker
-#
-docker images | grep phoenixd | awk '{print $3}' | xargs -r docker rmi -f
-docker build -t phoenixd:v0.5.1-patched-with-cli -f .docker/Dockerfile .
-docker tag phoenixd:v0.5.1-patched-with-cli phoenixd
+# Use ACINQ Official Docker images for amd64 and arm64
+docker pull acinq/phoenixd:${VERSION}
+docker tag acinq/phoenixd:${VERSION} phoenixd
 
 # create data dir and restore latest found backup
 #
@@ -87,14 +40,14 @@ if [ "$CURRENT_OWNER" != "bitcoin" ] || [ "$CURRENT_GROUP" != "bitcoin" ]; then
 else
     echo "Ownership is already correct: bitcoin:bitcoin."
 fi
-echo "Continuing with installation..."
+echo "Continue installation..."
 
 export PHOENIXD_BACKUP_DIR=/mnt/hdd/mynode/phoenixd_backup
 if [ -d "$PHOENIXD_BACKUP_DIR" ]; then
-    # Capture backup files, suppress error output if none are found
+    # Capture backup files, supress error output if none are found, and give name of nost recent
     export BACKUP_FILE=$(ls -1 "$PHOENIXD_BACKUP_DIR"/*.tar.gz 2>/dev/null | \
-        sed 's/.*\(.\{15\}\)\.tar\.gz$/\1 &/' | \
-        sort | tail -1 | cut -d' ' -f2-)
+        sed -E 's/.*(.{15})\.tar\.gz$/\1|\0/' | \
+        sort | tail -1 | cut -d'|' -f2-)
 
     if [ -n "$BACKUP_FILE" ]; then
         echo "Restoring latest found backup: $BACKUP_FILE"
@@ -103,7 +56,14 @@ if [ -d "$PHOENIXD_BACKUP_DIR" ]; then
         echo "No restoreable backup was found. Starting with a new phoenixd wallet."
     fi
 else
-    echo "Backup directory $PHOENIXD_BACKUP_DIR does not exist. Starting with a new phoenixd wallet."
+    echo "Backup directory $PHOENIXD_BACKUP_DIR does not exist. Creating..."
+    if [ ! -d "$BACKUP_PATH" ]; then 
+        mkdir -p "$BACKUP_PATH" || { echo "Backup path '$BACKUP_PATH' couldn't be created."; exit 1; }
+        chown bitcoin:bitcoin "$BACKUP_PATH" || { echo "Backup path owner couldn't be set."; exit 1; }
+    fi
+        # save installed version info to backup purposes
+	echo "$VERSION" > "$PHOENIXD_BACKUP_DIR\phoenixd_version"
+	echo "Starting phoenixd wallet "$VERSION" and creating new wallet configuration."
 fi
 
 echo "================== DONE INSTALLING APP ================="
