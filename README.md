@@ -11,6 +11,7 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 # Known issues
 * UID/GID of data dir must be 1000:1000 as workaround (docker-compose could help)
 * version information setting onto backup file made during install is not transferring to backup filenames on uninstall
+* interrupted installation with empty datadir causes issue - uninstall creates backup file from empty folder
 
 # ToDo
 

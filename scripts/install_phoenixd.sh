@@ -30,6 +30,7 @@ if [ ! -d "$PHOENIXD_DATA_DIR" ]; then
     echo "Successfully created $PHOENIXD_DATA_DIR"
 fi
 
+echo "Running UID is: $(id)"
 ###
 #  TEXT vs NUMBER UID/GID issue could (maybe) be solved with docker-compose
 ###
@@ -47,10 +48,10 @@ if [ "$CURRENT_OWNER" != "1000" ] || [ "$CURRENT_GROUP" != "1000" ]; then
     echo "Incorrect ownership detected ($CURRENT_OWNER:$CURRENT_GROUP). Updating to bitcoin:bitcoin..."
 ## TEXT
 #    chown bitcoin:bitcoin "$PHOENIXD_DATA_DIR" || { echo "Failed to set ownership for $PHOENIXD_DATA_DIR"; exit 1; }
-    chown 1000:1000 "$PHOENIXD_DATA_DIR" || { echo "Failed to set ownership for $PHOENIXD_DATA_DIR"; exit 1; }
+    chown 1000:1000 "$PHOENIXD_DATA_DIR" || { echo "Failed to set owner:group for $PHOENIXD_DATA_DIR"; exit 1; }
 ## TEXT
 #    echo "Ownership successfully updated to bitcoin:bitcoin."
-    echo "Ownership successfully updated to 1000:10000."
+    echo "Ownership successfully updated to 1000:1000."
 else
 ## TEXT
 #    echo "Ownership is already correct: bitcoin:bitcoin."
@@ -75,7 +76,8 @@ else
     echo "Backup directory $PHOENIXD_BACKUP_DIR does not exist. Creating..."
     if [ ! -d "$BACKUP_PATH" ]; then 
         mkdir -p "$BACKUP_PATH" || { echo "Backup path '$BACKUP_PATH' couldn't be created."; exit 1; }
-        chown bitcoin:bitcoin "$BACKUP_PATH" || { echo "Backup path owner couldn't be set."; exit 1; }
+#        chown bitcoin:bitcoin "$BACKUP_PATH" || { echo "Backup path owner couldn't be set."; exit 1; }
+        chown 1000:1000 "$BACKUP_PATH" || { echo "Backup path owner:group couldn't be set."; exit 1; }
     fi
         # save installed version info to backup purposes
 	echo "$VERSION" > "$PHOENIXD_BACKUP_DIR\phoenixd_version"
