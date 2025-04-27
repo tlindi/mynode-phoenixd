@@ -7,7 +7,9 @@ Wants=www.service docker_images.service
 After=www.service docker_images.service
 
 [Service]
-WorkingDirectory=/opt/mynode/phoenixd
+## Commented to test if working and we don't need to create
+## opt/mynode/phoenixd on install_phoenixd.sh
+#WorkingDirectory=/opt/mynode/phoenixd
 
 # Check if phoenixd is installed and installation is not in error state 
 #

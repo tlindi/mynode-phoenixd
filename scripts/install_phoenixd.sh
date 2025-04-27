@@ -15,7 +15,9 @@ echo "==================== INSTALLING APP ===================="
 # has already been downloaded and extracted. Any additional env variables specified
 # in the JSON file are also present.
 
-# TODO: Perform installation steps here
+## Lets see if we take workingDirectory off from .service
+## Is following needed
+# mkdir -p /opt/mynode/phoenixd || true 
 
 # Use ACINQ Official Docker images for amd64 and arm64
 docker pull acinq/phoenixd:${VERSION}
