@@ -53,8 +53,8 @@
             "heading": "Instructions",
             "content": [
                 "usage:",
-                "-App Page: Homepage Click - phoenixd - Info ",
-                "-Linux console: docker exec phoenixd bin/phoenix-cli getinfo",",
+                "-App Page: Homepage Click - phoenixd - Info",
+                "-Linux console: docker exec phoenixd bin/phoenix-cli getinfo",
                 "-API: http to port 9740",
                 "",
                 "Enjoy!"
