@@ -35,6 +35,8 @@ if [ -d /mnt/hdd/mynode/phoenixd ]; then
     tar zcfv "$BACKUP_FILE" --exclude=*.log ./
 
     if [ -f "$BACKUP_FILE" ]; then
+        echo "Removing Phoenixd install version backup..."
+        rm -rfv /mnt/hdd/mynode/phoenixd_backup/phoenixd_version
         echo "Removing Phoenixd data directory..."
         cd ..
         rm -rfv /mnt/hdd/mynode/phoenixd
