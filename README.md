@@ -9,9 +9,8 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 ![myNodeBTC-phoenixd](https://raw.githubusercontent.com/tlindi/mynode-phoenixd/refs/heads/main/screenshots/1.png)
 
 # Known issues
-* UID/GID of data dir must be 1000:1000 as workaround (docker-compose could help)
-* version information setting onto backup file made during install is not transferring to backup filenames on uninstall
-* interrupted installation with empty datadir causes issue - uninstall creates backup file from empty folder
+* UID/GID of data dir must be 1000:1000. As workaround owner is switched from .service (docker-compose could help)
+* Interrupted installation with empty datadir causes issue - uninstall creates backup file
 
 # ToDo
 
@@ -24,9 +23,10 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
 # Changelog
 
-### version 0.5.1 (branch 0.5.1-dockerhub)
-* use acinq dockerhub images
+### version 0.5.1 (voimaa)
+* use ACINQ dockerhub images
 * added instructions also to info page
+* more tested backup and restore of data dir
 
 ### docker user recheck
 * bitcoin / docker user setting mapped dynamically

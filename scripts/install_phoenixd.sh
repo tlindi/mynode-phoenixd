@@ -44,7 +44,7 @@ if [ ! -d "$PHOENIXD_BACKUP_DIR" ]; then
 else
     echo "Existing backup directory found:"
 	echo "$PHOENIXD_BACKUP_DIR"
-    # Capture backup files, supress error output if none are found, and give name of nost recent
+    # Capture backup files, supress error output if none are found, and give name of the most recent one
     export BACKUP_FILE=$(ls -1 "$PHOENIXD_BACKUP_DIR"/*.tar.gz 2>/dev/null | \
         sed -E 's/.*(.{15})\.tar\.gz$/\1|\0/' | \
         sort | tail -1 | cut -d'|' -f2-)
