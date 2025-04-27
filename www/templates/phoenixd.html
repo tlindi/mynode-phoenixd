@@ -84,14 +84,12 @@
                         <button class="ui-button ui-widget ui-corner-all mynode_button app_page_button install_button" onclick="install('{{ app.name }}', '{{ app.short_name }}');">Install</button>
                     {% else %}
                         <!-- Open -->
-<!--
                         {% if app.is_enabled and app.app_page_show_open_button %}
                             {% if app.http_port != "" or app.https_port != "" %}
                                 <button class="ui-button ui-widget ui-corner-all mynode_button app_page_button" onclick="open_app_in_new_tab('{{app.http_port}}', '{{app.https_port}}', false, '{APP_TOR_ADDRESS}')">Open</button>
                                 <div class="divider button_divider"></div>
                             {% endif %}
                         {% endif %}
--->
                         <!-- Get Info Button -->
                         {% if app.is_enabled %}
                             <button class="ui-button ui-widget ui-corner-all mynode_button app_page_button" onclick="getInfo()">GetInfo</button>
@@ -167,7 +165,10 @@
                         <div class="info-page-block">Instructions</div>
                     </div>
                     <div class="app_page_block_contents_text">
-                        <p>See phoenixd app screenshots from Mynode App Market to see usage. Enjoy!</p>
+                        <p>usage:"</p>
+                        <p>-App Page: Homepage Click - phoenixd - Info</p>
+                        <p>-Linux console: docker exec phoenixd bin/phoenix-cli getinfo",</p>
+                        <p>-API: http to port 9740</p>
 
                         <!-- Dynamic Output Section -->
                         <div id="output_table" class="output_section">

@@ -16,25 +16,24 @@ ExecStartPre=/bin/bash -c '[ "$(cat /home/bitcoin/.mynode/phoenixd_version 2>/de
 
 ExecStartPre=/usr/bin/is_not_shutting_down.sh
 ExecStartPre=/bin/bash -c 'if [ -f /usr/bin/service_scripts/pre_phoenixd.sh ]; then /bin/bash /usr/bin/service_scripts/pre_phoenixd.sh; fi'
+ExecStartPre=+/bin/bash -c 'if [ -f /opt/mynode/phoenixd/app_data/pre_phoenixd_UIDGRP2thousand.sh ]; then /bin/bash /opt/mynode/phoenixd/app_data/pre_phoenixd_UIDGRP2thousand.sh; fi'
 
-#
-#ExecStart=FILL_IN_EXECSTART
 # docker
 ExecStart=/bin/sh -c 'docker run --rm --name phoenixd \
     --publish 9740:9740 \
     --volume /mnt/hdd/mynode/phoenixd:/.phoenix \
     --env PHOENIX_DATADIR='/.phoenix' \
     --env WORK_DIR='/phoenix' \
-    --user $(id -u bitcoin):$(id -g bitcoin) \
+# --user doesn't change docker id accessing disk :-(
+#    --user $(id -u bitcoin):$(id -g bitcoin) \
     phoenixd'
 
 ExecStartPost=/bin/bash -c 'if [ -f /usr/bin/service_scripts/post_phoenixd.sh ]; then /bin/bash /usr/bin/service_scripts/post_phoenixd.sh; fi'
 
-#
 #ExecStop=FILL_IN_EXECSTOP_AND_UNCOMMENT_IF_NEEDED
 #
 ExecStop=/bin/bash -c 'docker ps -q -f name=phoenixd && docker stop phoenixd || true'
-
+ExecStop=+/bin/bash -c 'if [ -f /opt/mynode/phoenixd/app_data/stop_phoenixd_UIDGRP2bitcoin.sh ]; then /bin/bash /opt/mynode/phoenixd/app_data/stop_phoenixd_UIDGRP2bitcoin.sh; fi'
 
 User=bitcoin
 Group=bitcoin

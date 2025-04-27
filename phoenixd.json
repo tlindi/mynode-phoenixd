@@ -15,7 +15,7 @@
         "usage: via API or from console: docker exec phoenixd bin/phoenix-cli getinfo",
         "phoenixd is the server equivalent of the popular phoenix wallet for mobile.",
         "It is written in Kotlin Multiplatform and runs natively on",
-        "Linux, MacOS (x86 and ARM), and Windows (WSL).",
+        "Linux (x86 and ARM), MacOS (x86 and ARM), and Windows (WSL).",
         ">self custodial - your keys, your coins no email, no signup",
         ">absolutely -NO configuration get started in seconds",
         ">easy http api - webhook/websocket notifications",
@@ -23,18 +23,20 @@
         ">never miss an incoming payment - fully automated liquidity and channel management",
         ">competitive pricing (~1% receive fee, on par with custodian alternatives)"
     ],
-    "latest_version": "v0.5.1",
+    "latest_version": "0.5.1",
     "supported_archs": null,
     "download_skip": true,
     "download_type": "source",
     "download_source_url": "https://github.com/acinq/phoenixd/archive/refs/tags/{VERSION}.tar.gz",
     "download_binary_url": {
-        "aarch64": "https://github.com/ACINQ/phoenixd/releases/download/v0.5.1/phoenix-0.5.1-jvm.zip",
-        "x86_64": "https://github.com/ACINQ/phoenixd/releases/download/v0.5.1/phoenix-0.5.1-linux-x64.zip"
+        "aarch64": "https://github.com/ACINQ/phoenixd/releases/download/$latest_version/phoenix-0.5.1-jvm.zip",
+        "x86_64": "https://github.com/ACINQ/phoenixd/releases/download/$latest_version/phoenix-0.5.1-linux-x64.zip"
     },
     "supports_app_page": true,
     "supports_testnet": false,
-    "http_port": "9740",
+    "http_port": null,
+    "https_port": null,
+    "extra_ports": [9740],
     "requires_bitcoin": false,
     "requires_docker_image_installation": true,
     "requires_electrs": false,
@@ -53,9 +55,9 @@
             "heading": "Instructions",
             "content": [
                 "usage:",
-                "-App Page: Homepage Click - phoenixd - Info ",
-                "-Linux console: eg: docker exec phoenixd bin/phoenix-cli getinfo",
-                "-API: http port 9740",
+                "-App Page: Homepage Click - phoenixd - Info",
+                "-Linux console: docker exec phoenixd bin/phoenix-cli getinfo",
+                "-API: http to port 9740",
                 "",
                 "Enjoy!"
             ]

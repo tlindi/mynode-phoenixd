@@ -16,17 +16,17 @@ if [ -d /mnt/hdd/mynode/phoenixd ]; then
     cd /mnt/hdd/mynode/phoenixd || exit 1
     echo "Changed directory to $(pwd)"
 
-    BACKUP_PATH="../phoenixd_backup"
+    export BACKUP_PATH="../phoenixd_backup"
 
     if [ ! -d "$BACKUP_PATH" ]; then 
         mkdir -p "$BACKUP_PATH" || { echo "Backup path '$BACKUP_PATH' couldn't be created."; exit 1; }
         chown bitcoin:bitcoin "$BACKUP_PATH" || { echo "Backup path owner couldn't be set."; exit 1; }
     fi
 
-    BACKUP_PHOENIXD_VERSION=$(cat /home/bitcoin/.mynode/phoenixd_version)
-    BACKUP_PHOENIXD_NODEID=$(ls *.db | head -1 | sed 's/phoenix.mainnet.//g' | sed 's/.db//g')
-    BACKUP_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-    BACKUP_FILE="$BACKUP_PATH/phoenixd-$BACKUP_PHOENIXD_VERSION-nodeid_$BACKUP_PHOENIXD_NODEID-$BACKUP_TIMESTAMP.tar.gz"
+    export BACKUP_PHOENIXD_VERSION=$(cat "$BACKUP_PATH/phoenixd_version") 
+    export BACKUP_PHOENIXD_NODEID=$(ls *.db | head -1 | sed 's/phoenix.mainnet.//g' | sed 's/.db//g')
+    export BACKUP_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+    export BACKUP_FILE="$BACKUP_PATH/phoenixd-$BACKUP_PHOENIXD_VERSION-nodeid_$BACKUP_PHOENIXD_NODEID-$BACKUP_TIMESTAMP.tar.gz"
 
     echo "Backing up Phoenixd data..."
     echo "Source: $(pwd)"
@@ -38,6 +38,9 @@ if [ -d /mnt/hdd/mynode/phoenixd ]; then
         echo "Removing Phoenixd data directory..."
         cd ..
         rm -rfv /mnt/hdd/mynode/phoenixd
+
+        echo "Removing Phoenixd install version backup..."
+        rm -rfv /mnt/hdd/mynode/phoenixd_backup/phoenixd_version
     else
         echo "Data removal skipped—backup file missing!"
     fi

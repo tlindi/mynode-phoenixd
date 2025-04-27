@@ -15,95 +15,49 @@ echo "==================== INSTALLING APP ===================="
 # has already been downloaded and extracted. Any additional env variables specified
 # in the JSON file are also present.
 
-# TODO: Perform installation steps here
+# WorkingDirectory for .service is needed
+mkdir -p /opt/mynode/phoenixd || true 
 
-# use ACINQ docker
-#git clone http://www.github.com/acinq/phoenixd.git
+# Use ACINQ Official Docker images for amd64 and arm64
+docker pull acinq/phoenixd:${VERSION}
+docker tag acinq/phoenixd:${VERSION} phoenixd
 
-# use tlindi repo for patched v0.5.1 and Dockerfile
-git clone http://www.github.com/tlindi/phoenixd.git
-
-cd phoenixd
-git fetch --tags origin
-#git checkout $VERSION
-git checkout $VERSION-patched-with-cli
-#
-# get 0.5.1 acinq patched commit (will do -patch "manually" at * below)
-#git checkout 75ae285dd41833f58f409990635e84f2607c1a6e
-#
-# Create a local branch to avoid detached HEAD issues
-#git switch -c v0.5.1-patched-with-cli
-# Ensure the repository is strictly at v0.5.1 without pulling new commits
-#git fetch origin v0.5.1-patched-with-cli
-#git reset --hard v0.5.1-patched-with-cli
-
-# (*) patch docker 0.5.1-patched which ACINQ forgot from release
-#not needed with tlindi repo
-#sed -i 's/v0.5.0/v0.5.1/g' .docker/Dockerfile # version
-#sed -i 's/dc7f12417c70cc9af1e1f7d7f077910f8b198a98/ab9a026432a61d986d83c72df5619014414557be/g' .docker/Dockerfile # commithash
-#sed -i 's/distTar/jvmDistTar/g' .docker/Dockerfile # cradled task
-#sed -i 's/distributions\/phoenix-/distributions\/phoenixd-/g' .docker/Dockerfile # tar filename
-#sed -i 's/xvf phoenix-/xvf phoenixd-/g' .docker/Dockerfile # tar extract filename
-##
-# Add cli building into Dockerfile as additional gradlew task
-#not needed with tlindi repo - Dockerfile there has this
-#sed -i '/&& \.\/gradlew jvmDistTar/i\
-#    && ./gradlew startScriptsForJvmPhoenix-cli \\' .docker/Dockerfile
-
-# patch docker internal user to match MyNode bitcoin user
-# so access rights on /mnt/hdd/mynode/phoenixd look similar to other apps ie "bitcoin:bitcoin"
-export BTC_USR=$(id -u bitcoin)
-export BTC_GRP=$(id -g bitcoin)
-echo "BTC_USR=$BTC_USR, BTC_GRP=$BTC_GRP"
-sed -i "s/gid 1000/gid $BTC_USR/g" .docker/Dockerfile
-sed -i "s/uid 1000/uid $BTC_GRP/g" .docker/Dockerfile
-
-# sudo docker ps -a
-# sudo docker remove <CONTAINER_ID>
-# docker image list
-# docker rmi phoenixd:latest
-#sudo -u bitcoin docker build -t phoenixd:latest .docker
-#
-docker images | grep phoenixd | awk '{print $3}' | xargs -r docker rmi -f
-docker build -t phoenixd:v0.5.1-patched-with-cli -f .docker/Dockerfile .
-docker tag phoenixd:v0.5.1-patched-with-cli phoenixd
-
-# create data dir and restore latest found backup
+## create data dir
 #
 export PHOENIXD_DATA_DIR=/mnt/hdd/mynode/phoenixd
 if [ ! -d "$PHOENIXD_DATA_DIR" ]; then
-    mkdir -p "$PHOENIXD_DATA_DIR" || { echo "Failed to create $PHOENIXD_DATA_DIR"; exit 1; }
-    echo "Successfully created $PHOENIXD_DATA_DIR"
+    mkdir -p "$PHOENIXD_DATA_DIR" || { echo "Failed to create data directory: $PHOENIXD_DATA_DIR"; exit 1; }
+    echo "Successfully created data directory:"
+	echo "$PHOENIXD_DATA_DIR"
 fi
 
-# Verify and fix ownership if necessary
-CURRENT_OWNER=$(stat -c '%U' "$PHOENIXD_DATA_DIR")
-CURRENT_GROUP=$(stat -c '%G' "$PHOENIXD_DATA_DIR")
-
-if [ "$CURRENT_OWNER" != "bitcoin" ] || [ "$CURRENT_GROUP" != "bitcoin" ]; then
-    echo "Incorrect ownership detected ($CURRENT_OWNER:$CURRENT_GROUP). Updating to bitcoin:bitcoin..."
-    chown bitcoin:bitcoin "$PHOENIXD_DATA_DIR" || { echo "Failed to set ownership for $PHOENIXD_DATA_DIR"; exit 1; }
-    echo "Ownership successfully updated to bitcoin:bitcoin."
-else
-    echo "Ownership is already correct: bitcoin:bitcoin."
-fi
-echo "Continuing with installation..."
+##  restore latest found backup
+#
+echo "Populate data dir from backup, if such exists."
 
 export PHOENIXD_BACKUP_DIR=/mnt/hdd/mynode/phoenixd_backup
-if [ -d "$PHOENIXD_BACKUP_DIR" ]; then
-    # Capture backup files, suppress error output if none are found
+if [ ! -d "$PHOENIXD_BACKUP_DIR" ]; then
+    echo "Previous backup directory not found at:"
+	echo "$PHOENIXD_BACKUP_DIR so creating it..."
+    mkdir -p "$PHOENIXD_BACKUP_DIR" || { echo "Backup path '$PHOENIXD_BACKUP_DIR' couldn't be created."; exit 1; }
+	echo "phoenixd "$VERSION" will open a new wallet."
+else
+    echo "Existing backup directory found:"
+	echo "$PHOENIXD_BACKUP_DIR"
+    # Capture backup files, supress error output if none are found, and give name of the most recent one
     export BACKUP_FILE=$(ls -1 "$PHOENIXD_BACKUP_DIR"/*.tar.gz 2>/dev/null | \
-        sed 's/.*\(.\{15\}\)\.tar\.gz$/\1 &/' | \
-        sort | tail -1 | cut -d' ' -f2-)
+        sed -E 's/.*(.{15})\.tar\.gz$/\1|\0/' | \
+        sort | tail -1 | cut -d'|' -f2-)
 
     if [ -n "$BACKUP_FILE" ]; then
-        echo "Restoring latest found backup: $BACKUP_FILE"
+        echo "Restoring from latest backup file found:"
+		echo "$BACKUP_FILE"
         tar xzvf "$BACKUP_FILE" --strip-components=1 -C "$PHOENIXD_DATA_DIR"
     else
-        echo "No restoreable backup was found. Starting with a new phoenixd wallet."
+        echo "No restoreable backup was found."
     fi
-else
-    echo "Backup directory $PHOENIXD_BACKUP_DIR does not exist. Starting with a new phoenixd wallet."
 fi
+
+echo $VERSION > "$PHOENIXD_BACKUP_DIR/phoenixd_version"
 
 echo "================== DONE INSTALLING APP ================="
