@@ -15,9 +15,8 @@ echo "==================== INSTALLING APP ===================="
 # has already been downloaded and extracted. Any additional env variables specified
 # in the JSON file are also present.
 
-## Lets see if we take workingDirectory off from .service
-## Is following needed
-# mkdir -p /opt/mynode/phoenixd || true 
+# WorkingDirectory for .service is needed
+mkdir -p /opt/mynode/phoenixd || true 
 
 # Use ACINQ Official Docker images for amd64 and arm64
 docker pull acinq/phoenixd:${VERSION}
@@ -31,16 +30,31 @@ if [ ! -d "$PHOENIXD_DATA_DIR" ]; then
     echo "Successfully created $PHOENIXD_DATA_DIR"
 fi
 
-# Verify and fix ownership if necessary
-CURRENT_OWNER=$(stat -c '%U' "$PHOENIXD_DATA_DIR")
-CURRENT_GROUP=$(stat -c '%G' "$PHOENIXD_DATA_DIR")
+###
+#  TEXT vs NUMBER UID/GID issue could (maybe) be solved with docker-compose
+###
+## Verify and fix ownership if necessary (TEXT)
+#CURRENT_OWNER=$(stat -c '%U' "$PHOENIXD_DATA_DIR")
+#CURRENT_GROUP=$(stat -c '%G' "$PHOENIXD_DATA_DIR")
+## Verify and fix ownership if necessary (number)
+CURRENT_OWNER=$(stat -c '%u' "$PHOENIXD_DATA_DIR")
+CURRENT_GROUP=$(stat -c '%g' "$PHOENIXD_DATA_DIR")
 
-if [ "$CURRENT_OWNER" != "bitcoin" ] || [ "$CURRENT_GROUP" != "bitcoin" ]; then
+## TEXT 
+#if [ "$CURRENT_OWNER" != "bitcoin" ] || [ "$CURRENT_GROUP" != "bitcoin" ]; then
+## Number 
+if [ "$CURRENT_OWNER" != "1000" ] || [ "$CURRENT_GROUP" != "1000" ]; then
     echo "Incorrect ownership detected ($CURRENT_OWNER:$CURRENT_GROUP). Updating to bitcoin:bitcoin..."
-    chown bitcoin:bitcoin "$PHOENIXD_DATA_DIR" || { echo "Failed to set ownership for $PHOENIXD_DATA_DIR"; exit 1; }
-    echo "Ownership successfully updated to bitcoin:bitcoin."
+## TEXT
+#    chown bitcoin:bitcoin "$PHOENIXD_DATA_DIR" || { echo "Failed to set ownership for $PHOENIXD_DATA_DIR"; exit 1; }
+    chown 1000:1000 "$PHOENIXD_DATA_DIR" || { echo "Failed to set ownership for $PHOENIXD_DATA_DIR"; exit 1; }
+## TEXT
+#    echo "Ownership successfully updated to bitcoin:bitcoin."
+    echo "Ownership successfully updated to 1000:10000."
 else
-    echo "Ownership is already correct: bitcoin:bitcoin."
+## TEXT
+#    echo "Ownership is already correct: bitcoin:bitcoin."
+    echo "Ownership is already correct: 1000:1000."
 fi
 echo "Continue installation..."
 
