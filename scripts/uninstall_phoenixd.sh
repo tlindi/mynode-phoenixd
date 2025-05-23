@@ -6,10 +6,10 @@ source /usr/share/mynode/mynode_app_versions.sh
 set -x
 set -e
 
+echo "==================== UNINSTALLING APP ===================="
+
 echo Setting trap to detect errors. Following is not error:
 trap 'echo "An error occurred. Exiting."; exit 1' ERR
-
-echo "==================== UNINSTALLING APP ===================="
 
 # Backup Phoenixd data before removal
 if [ -d /mnt/hdd/mynode/phoenixd ]; then
@@ -26,7 +26,7 @@ if [ -d /mnt/hdd/mynode/phoenixd ]; then
     export BACKUP_PHOENIXD_VERSION=$(cat "$BACKUP_PATH/phoenixd_version") 
     export BACKUP_PHOENIXD_NODEID=$(ls *.db | head -1 | sed 's/phoenix.mainnet.//g' | sed 's/.db//g')
     export BACKUP_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-    export BACKUP_FILE="$BACKUP_PATH/phoenixd-$BACKUP_PHOENIXD_VERSION-nodeid_$BACKUP_PHOENIXD_NODEID-$BACKUP_TIMESTAMP.tar.gz"
+    export BACKUP_FILE="$BACKUP_PATH/phoenixd-$BACKUP_PHOENIXD_VERSION-nodeid_$BACKUP_PHOENIXD_NODEID-$BACKUP_TIMESTAMP.tgz"
 
     echo "Backing up Phoenixd data..."
     echo "Source: $(pwd)"
