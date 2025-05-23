@@ -11,7 +11,6 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 # Known issues
 * UID/GID of data dir must be 1000:1000. As workaround owner is switched from .service (docker-compose could help)
 * Interrupted installation with empty datadir causes issue - uninstall creates empty backup file
-* phoenix-cli is missing 
 
 # ToDo
 
@@ -23,6 +22,9 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 * backup button
 
 # Changelog
+
+### v0.6.0 (voi)
+* phoenix-cli binary included in docker
 
 ### version 0.5.1 (voimaa)
 * use ACINQ dockerhub images
