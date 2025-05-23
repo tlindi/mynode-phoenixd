@@ -18,13 +18,15 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 * commandline wrapper bin to docker exec
 * bash completitioner
 
-### needs
-* backup button
+### needs App Data management
+* data backup, restore and delete buttons
 
 # Changelog
 
-### v0.6.0 (voi)
+### version 0.6.0 (voi)
 * phoenix-cli binary included in docker
+* no more beta
+* usage detailing
 
 ### version 0.5.1 (voimaa)
 * use ACINQ dockerhub images
