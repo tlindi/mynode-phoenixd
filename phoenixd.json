@@ -23,7 +23,7 @@
         ">never miss an incoming payment - fully automated liquidity and channel management",
         ">competitive pricing (~1% receive fee, on par with custodian alternatives)"
     ],
-    "latest_version": "0.6.0",
+    "latest_version": "0.6.2",
     "supported_archs": null,
     "download_skip": true,
     "download_type": "source",
