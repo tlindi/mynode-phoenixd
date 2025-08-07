@@ -23,6 +23,10 @@ TAKE, KEEP AND VERYFY BACKUP DATA RESTORABILITY BY YOURSELF!
 
 # Changelog
 
+### version 0.6.2
+* phoenixd version upgrade
+* no other changes
+
 ### version 0.6.0 (voi)
 * phoenix-cli binary included in docker
 * no more beta
